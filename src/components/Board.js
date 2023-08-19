@@ -15,28 +15,6 @@ const Board = () => {
 
   const [highestTile, setHighestTile] = useState(2);
 
-  const handleUndo = () => {
-    if (canUndo) {
-      const tempGrid = { grid, score };
-      setGrid(history.grid);
-      setScore(history.score);
-      setHistory(tempGrid);
-      setCanUndo(false);
-      setCanRedo(true);
-    }
-  };
-
-  const handleRedo = () => {
-    if (canRedo) {
-      const tempGrid = { grid, score };
-      setGrid(history.grid);
-      setScore(history.score);
-      setHistory(tempGrid);
-      setCanUndo(true);
-      setCanRedo(false);
-    }
-  };
-
   useEffect(() => {
     const newGrid = Array.from({ length: GRID_SIZE }, () =>
       Array(GRID_SIZE).fill(0)
@@ -77,8 +55,78 @@ const Board = () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   });
-  const cloneGrid = (grid) => {
-    return grid.map((row) => [...row]);
+
+  useEffect(() => {
+    const touchStart = { x: 0, y: 0 };
+    const touchEnd = { x: 0, y: 0 };
+    const minSwipeDistance = 50; // Adjust this value as needed
+
+    const handleTouchStart = (event) => {
+      touchStart.x = event.touches[0].clientX;
+      touchStart.y = event.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (event) => {
+      touchEnd.x = event.changedTouches[0].clientX;
+      touchEnd.y = event.changedTouches[0].clientY;
+
+      const swipeDistanceX = touchEnd.x - touchStart.x;
+      const swipeDistanceY = touchEnd.y - touchStart.y;
+
+      if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
+        // Horizontal swipe
+        if (Math.abs(swipeDistanceX) > minSwipeDistance) {
+          if (swipeDistanceX > 0) {
+            // Right swipe
+            handleMove("right");
+          } else {
+            // Left swipe
+            handleMove("left");
+          }
+        }
+      } else {
+        // Vertical swipe
+        if (Math.abs(swipeDistanceY) > minSwipeDistance) {
+          if (swipeDistanceY > 0) {
+            // Down swipe
+            handleMove("down");
+          } else {
+            // Up swipe
+            handleMove("up");
+          }
+        }
+      }
+    };
+
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchend", handleTouchEnd);
+    };
+  });
+
+  const handleUndo = () => {
+    if (canUndo) {
+      const tempGrid = { grid, score };
+      setGrid(history.grid);
+      setScore(history.score);
+      setHistory(tempGrid);
+      setCanUndo(false);
+      setCanRedo(true);
+    }
+  };
+
+  const handleRedo = () => {
+    if (canRedo) {
+      const tempGrid = { grid, score };
+      setGrid(history.grid);
+      setScore(history.score);
+      setHistory(tempGrid);
+      setCanUndo(true);
+      setCanRedo(false);
+    }
   };
 
   // Function to handle tile movement and mergin
@@ -87,7 +135,7 @@ const Board = () => {
       return;
     }
 
-    const newGrid = cloneGrid(grid); // Clone the grid
+    const newGrid = grid.map((row) => [...row]); // Clone the grid
     let moved = false;
     let newScore = score;
 
@@ -299,13 +347,9 @@ const Board = () => {
           Redo
         </button>
         <div className="game-board">
-          {grid.map((row, rowIndex) => (
-            <>
-              {row.map((cell, colIndex) => (
-                <Tile key={colIndex} value={cell} />
-              ))}
-            </>
-          ))}
+          {grid.map((row, rowIndex) =>
+            row.map((cell, colIndex) => <Tile key={colIndex} value={cell} />)
+          )}
         </div>
       </div>
     );
