@@ -9,6 +9,34 @@ const Board = () => {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
+  const [history, setHistory] = useState({ grid: [], score: 0 });
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
+
+  const [highestTile, setHighestTile] = useState(2);
+
+  const handleUndo = () => {
+    if (canUndo) {
+      const tempGrid = { grid, score };
+      setGrid(history.grid);
+      setScore(history.score);
+      setHistory(tempGrid);
+      setCanUndo(false);
+      setCanRedo(true);
+    }
+  };
+
+  const handleRedo = () => {
+    if (canRedo) {
+      const tempGrid = { grid, score };
+      setGrid(history.grid);
+      setScore(history.score);
+      setHistory(tempGrid);
+      setCanUndo(true);
+      setCanRedo(false);
+    }
+  };
+
   useEffect(() => {
     const newGrid = Array.from({ length: GRID_SIZE }, () =>
       Array(GRID_SIZE).fill(0)
@@ -80,6 +108,9 @@ const Board = () => {
                 newGrid[newRow - 1][col] === newGrid[newRow][col]
               ) {
                 newGrid[newRow - 1][col] *= 2;
+                if (newGrid[newRow - 1][col] > highestTile) {
+                  setHighestTile(newGrid[newRow - 1][col]);
+                }
                 newGrid[newRow][col] = 0;
                 newScore += newGrid[newRow - 1][col];
                 moved = true;
@@ -105,6 +136,9 @@ const Board = () => {
                 newGrid[newRow + 1][col] === newGrid[newRow][col]
               ) {
                 newGrid[newRow + 1][col] *= 2;
+                if (newGrid[newRow + 1][col] > highestTile) {
+                  setHighestTile(newGrid[newRow + 1][col]);
+                }
                 newGrid[newRow][col] = 0;
                 newScore += newGrid[newRow + 1][col];
                 moved = true;
@@ -130,6 +164,9 @@ const Board = () => {
                 newGrid[row][newCol - 1] === newGrid[row][newCol]
               ) {
                 newGrid[row][newCol - 1] *= 2;
+                if (newGrid[row][newCol - 1] > highestTile) {
+                  setHighestTile(newGrid[row][newCol - 1]);
+                }
                 newGrid[row][newCol] = 0;
                 newScore += newGrid[row][newCol - 1];
                 moved = true;
@@ -155,6 +192,9 @@ const Board = () => {
                 newGrid[row][newCol + 1] === newGrid[row][newCol]
               ) {
                 newGrid[row][newCol + 1] *= 2;
+                if (newGrid[row][newCol + 1] > highestTile) {
+                  setHighestTile(newGrid[row][newCol + 1]);
+                }
                 newGrid[row][newCol] = 0;
                 newScore += newGrid[row][newCol + 1];
                 moved = true;
@@ -171,8 +211,10 @@ const Board = () => {
     if (moved) {
       generateNewTile(newGrid);
       checkWinLoss(newGrid);
+      setHistory({ grid, score });
       setGrid(newGrid);
       setScore(newScore);
+      setCanUndo(true);
     }
   };
 
@@ -239,9 +281,23 @@ const Board = () => {
         <h1 className="text-center mt-4 mb-3">2048 Game</h1>
         <div className="score-n-highest">
           <span className="score mb-1">Score: {score}</span>
-          <span className="highest-tile mb-1">Highest Tile: {0}</span>
+          <span className="highest-tile mb-1">Highest Tile: {highestTile}</span>
         </div>
         {gameOver && <div className="game-over">Game Over</div>}
+        <button
+          className="btn btn-secondary"
+          onClick={handleUndo}
+          disabled={!canUndo}
+        >
+          Undo
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={handleRedo}
+          disabled={!canRedo}
+        >
+          Redo
+        </button>
         <div className="game-board">
           {grid.map((row, rowIndex) => (
             <>
