@@ -2,7 +2,7 @@ import React from "react";
 import "./Tile.css"; // You can create this CSS file for styling
 
 const valueToWordAndColor = {
-  0: { word: "Empty", color: "#ffffff" },
+  0: { word: "Empty", color: "#49c5fa" },
   2: { word: "Quasar", color: "#003366" },
   4: { word: "Nebula", color: "#663399" },
   8: { word: "Galaxy", color: "#006400" },
@@ -23,8 +23,8 @@ const Tile = ({ value }) => {
   const { word, color } = valueToWordAndColor[value];
   return (
     <div className={`tile`} style={{ backgroundColor: color }}>
-      <span>{value}</span>
-      <span className="tile-word">{word}</span>
+      <span>{value ? value : ""}</span>
+      <span className="tile-word">{value ? word : ""}</span>
     </div>
   );
 };

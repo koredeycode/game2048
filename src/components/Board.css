@@ -1,14 +1,55 @@
 /* Board.css */
-
-.container {
-  max-width: fit-content; /* Adjust the width as needed */
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #b98787;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+.content {
+  width: 478px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-
+.board {
+  margin: auto;
+  position: relative;
+  background: rgb(255, 255, 255);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: 15px;
+  box-shadow: 3px 3px 24px 3px #dfdfe0;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+.tile-wrapper {
+  background-color: #fbfaf9;
+  border-radius: 12px;
+  width: 60px;
+  height: 60px;
+  font-size: small;
+}
+.tile {
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  font-size: small;
+  background-color: #49c5fa;
+  color: #49c5fa;
+}
+@media only screen and (max-width: 950px) {
+  .tile,
+  .tile-result,
+  .tile-wrapper {
+    width: 60px;
+    height: 60px;
+    font-size: small;
+  }
+}
 .score,
 .highest-tile {
   font-size: 18px;
@@ -17,8 +58,9 @@
 
 .game-board {
   display: grid;
+  background-color: red;
   grid-template-columns: repeat(4, 1fr); /* 4 columns */
-  grid-gap: 10px; /* Adjust the gap between tiles */
+  grid-gap: 3px; /* Adjust the gap between tiles */
   margin-top: 20px;
 }
 
@@ -32,10 +74,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #eee;
   color: white;
-  height: 10vw; /* Adjust the height and width as needed */
-  width: 10vw;
   font-weight: bold;
 }
 
