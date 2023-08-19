@@ -352,8 +352,29 @@ const Board = () => {
 
   return (
     <div className="content">
+      {renderGrid()}
+      <div class="">
+        <div className="d-flex justify-content-center mb-3">
+          <button
+            className="btn btn-secondary mr-2"
+            onClick={handleUndo}
+            disabled={!canUndo}
+          >
+            Undo
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={handleRedo}
+            disabled={!canRedo}
+          >
+            Redo
+          </button>
+        </div>
+      </div>
+      <div class="instructions narrow" style={{ padding: "18px 0 6px 0" }}>
+        Swipe the board ←→↑↓ to combine same tiles.
+      </div>
       <div className="board">
-        {renderGrid()}
         {grid.map((row, rowIndex) => (
           <div className="row">
             {row.map((cell, colIndex) => (
@@ -363,24 +384,6 @@ const Board = () => {
             ))}
           </div>
         ))}
-        <div class="">
-          <div className="d-flex justify-content-center mb-3">
-            <button
-              className="btn btn-secondary mr-2"
-              onClick={handleUndo}
-              disabled={!canUndo}
-            >
-              Undo
-            </button>
-            <button
-              className="btn btn-secondary"
-              onClick={handleRedo}
-              disabled={!canRedo}
-            >
-              Redo
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

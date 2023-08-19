@@ -9,7 +9,7 @@
 .board {
   margin: auto;
   position: relative;
-  background: rgb(255, 255, 255);
+  background: rgb(4, 28, 83);
   padding: 30px;
   display: flex;
   flex-direction: column;
