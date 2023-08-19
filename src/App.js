@@ -4,7 +4,7 @@ import Board from "./components/Board"; // Update the import path
 
 function App() {
   return (
-    <div className="App">
+    <div className="">
       <Board /> {/* Render your Board component here */}
     </div>
   );

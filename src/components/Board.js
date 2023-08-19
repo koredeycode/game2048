@@ -337,62 +337,13 @@ const Board = () => {
     setGameOver(true); // No valid moves, you've lost
   };
 
-  // Function to render the game grid
-  // const renderGrid = () => {
-  //   return (
-  //     <div className="container">
-  //       <h1 className="text-center mt-4 mb-3">2048 Game</h1>
-  //       <div className="score-n-highest">
-  //         <span className="score mb-1">Score: {score}</span>
-  //         <span className="highest-tile mb-1">Highest Tile: {highestTile}</span>
-  //       </div>
-  //       {gameOver && <div className="game-over">Game Over</div>}
-  //       <button
-  //         className="btn btn-secondary"
-  //         onClick={handleUndo}
-  //         disabled={!canUndo}
-  //       >
-  //         Undo
-  //       </button>
-  //       <button
-  //         className="btn btn-secondary"
-  //         onClick={handleRedo}
-  //         disabled={!canRedo}
-  //       >
-  //         Redo
-  //       </button>
-  //       <div className="game-board">
-  //         {grid.map((row, rowIndex) =>
-  //           row.map((cell, colIndex) => <Tile key={colIndex} value={cell} />)
-  //         )}
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
   const renderGrid = () => {
     return (
-      <div className="container bg-primary">
+      <div className=" bg-primary">
         <h1 className="text-center mt-4 mb-3">2048 Game</h1>
         <div className="text-center mb-3">
           <span>Score: {score}</span>
           <span className="ml-3">Highest Tile: {highestTile}</span>
-        </div>
-        <div className="d-flex justify-content-center mb-3">
-          <button
-            className="btn btn-secondary mr-2"
-            onClick={handleUndo}
-            disabled={!canUndo}
-          >
-            Undo
-          </button>
-          <button
-            className="btn btn-secondary"
-            onClick={handleRedo}
-            disabled={!canRedo}
-          >
-            Redo
-          </button>
         </div>
         {gameOver && <div className="text-center mb-3">Game Over</div>}
       </div>
@@ -412,6 +363,24 @@ const Board = () => {
             ))}
           </div>
         ))}
+        <div class="">
+          <div className="d-flex justify-content-center mb-3">
+            <button
+              className="btn btn-secondary mr-2"
+              onClick={handleUndo}
+              disabled={!canUndo}
+            >
+              Undo
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={handleRedo}
+              disabled={!canRedo}
+            >
+              Redo
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
