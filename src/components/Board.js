@@ -107,6 +107,20 @@ const Board = () => {
     };
   });
 
+  useEffect(() => {
+    const preventSwipeDefault = (event) => {
+      event.preventDefault();
+    };
+
+    document.addEventListener("touchmove", preventSwipeDefault, {
+      passive: false,
+    });
+
+    return () => {
+      document.removeEventListener("touchmove", preventSwipeDefault);
+    };
+  }, []);
+
   const handleUndo = () => {
     if (canUndo) {
       const tempGrid = { grid, score };
