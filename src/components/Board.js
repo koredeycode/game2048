@@ -308,7 +308,7 @@ const Board = () => {
   const checkWinLoss = (grid) => {
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[row].length; col++) {
-        if (grid[row][col] === 32) {
+        if (grid[row][col] === 2048) {
           setGameOver(true); // You've won!
           setIsWon(true);
           return;
