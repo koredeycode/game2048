@@ -1,10 +1,30 @@
 /* Board.css */
+body {
+  background-color: rgb(255, 255, 255);
+}
 .content {
   margin: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: auto;
+  background-color: rgb(131, 174, 223);
+  width: fit-content;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 3px 3px 10px 3px #dfdfe0;
+}
+.heading {
+  background-color: rgb(4, 28, 83);
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px 15px 0px 0px;
+}
+.screen {
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  color: white;
 }
 .board {
   margin: auto;
@@ -14,10 +34,9 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  border-radius: 15px;
-  box-shadow: 3px 3px 24px 3px #dfdfe0;
+  border-radius: 0px 0px 15px 15px;
 }
-.row {
+.tile-row {
   display: flex;
   flex-direction: row;
   gap: 6px;

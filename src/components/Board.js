@@ -8,6 +8,7 @@ const Board = () => {
   const [grid, setGrid] = useState([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [isWon, setIsWon] = useState(false);
 
   const [history, setHistory] = useState({ grid: [], score: 0 });
   const [canUndo, setCanUndo] = useState(false);
@@ -124,6 +125,7 @@ const Board = () => {
   const handleUndo = () => {
     if (canUndo) {
       gameOver && setGameOver(false);
+      isWon && setIsWon(false);
       const tempGrid = { grid, score };
       setGrid(history.grid);
       setScore(history.score);
@@ -146,7 +148,7 @@ const Board = () => {
 
   // Function to handle tile movement and mergin
   const handleMove = (direction) => {
-    if (gameOver) {
+    if (gameOver || isWon) {
       return;
     }
 
@@ -306,8 +308,9 @@ const Board = () => {
   const checkWinLoss = (grid) => {
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[row].length; col++) {
-        if (grid[row][col] === 2048) {
+        if (grid[row][col] === 32) {
           setGameOver(true); // You've won!
+          setIsWon(true);
           return;
         }
       }
@@ -337,26 +340,44 @@ const Board = () => {
     setGameOver(true); // No valid moves, you've lost
   };
 
-  const renderGrid = () => {
+  const renderHeading = () => {
     return (
-      <div className=" bg-primary">
-        <h1 className="text-center mt-4 mb-3">2048 Game</h1>
-        <div className="text-center mb-3">
-          <span>Score: {score}</span>
-          <span className="ml-3">Highest Tile: {highestTile}</span>
+      <div>
+        <h1
+          style={{ margin: "5px", textAlign: "center", fontSize: "20px" }}
+          className=""
+        >
+          2048 Game
+        </h1>
+        <div className="heading">
+          <div className="screen">
+            <span>Score: {score}</span>
+            <span className="ml-3">Highest Tile: {highestTile}</span>
+          </div>
+          {gameOver && (
+            <div
+              style={{ backgroundColor: "white", color: "red" }}
+              className="text-center mb-3"
+            >
+              Game {isWon ? "Won" : "Over"}
+            </div>
+          )}
         </div>
-        {gameOver && <div className="text-center mb-3">Game Over</div>}
       </div>
     );
   };
 
   return (
     <div className="content">
-      {renderGrid()}
-      <div class="">
-        <div className="d-flex justify-content-center mb-3">
+      {renderHeading()}
+
+      <span style={{ textAlign: "center" }}>
+        Swipe the board ←→↑↓ to combine same tiles.
+      </span>
+      <div className="board">
+        <div className="d-flex justify-content-center">
           <button
-            className="btn btn-secondary mr-2"
+            className="btn btn-secondary me-2"
             onClick={handleUndo}
             disabled={!canUndo}
           >
@@ -370,13 +391,8 @@ const Board = () => {
             Redo
           </button>
         </div>
-      </div>
-      <div class="instructions narrow" style={{ padding: "18px 0 6px 0" }}>
-        Swipe the board ←→↑↓ to combine same tiles.
-      </div>
-      <div className="board">
         {grid.map((row, rowIndex) => (
-          <div className="row">
+          <div className="tile-row">
             {row.map((cell, colIndex) => (
               <div class="tile-wrapper">
                 <Tile value={cell} />
